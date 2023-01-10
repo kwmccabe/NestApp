@@ -1,6 +1,7 @@
 # see https://github.com/tomwray13/nest-docker-postgres-prisma
 # see https://www.tomray.dev/nestjs-docker-production
 # see https://www.tomray.dev/deploy-nestjs-cloud-run
+# see https://typeorm.io/data-source-options#common-data-source-options
 
 ###################
 # BUILD FOR LOCAL DEVELOPMENT
@@ -18,6 +19,10 @@ COPY --chown=node:node package*.json .
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci
+# RUN npm install -g @nestjs/cli
+# RUN npm install --save @nestjs/typeorm typeorm mysql
+# RUN npm install --save @nestjs/config
+
 
 # Bundle app source
 COPY --chown=node:node . .

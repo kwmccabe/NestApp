@@ -1,17 +1,43 @@
 version: '3'
 
 services:
+    db:
+        image: mysql:8
+        container_name: nestjs-db
+        env_file: dot.env
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USERNAME}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./mysql/data:/var/lib/mysql
+        networks:
+            - back
+        restart: always
+
     api:
         container_name: nestjs-api
-#         tty: true
+        env_file: dot.env
         build:
             context: ./app
             dockerfile: Dockerfile
             target: development
-        env_file:
-            - ./dot.env
         command: npm run start:dev
         ports:
             - 3000:3000
         volumes:
             - ./app:/usr/src/app
+        depends_on:
+            - db
+        networks:
+            - front
+            - back
+
+#         tty: true
+
+networks:
+  front:
+    driver: bridge
+  back:
+    driver: bridge
